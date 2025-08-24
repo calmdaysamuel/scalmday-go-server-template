@@ -249,7 +249,7 @@ if [ ! -f "$CMD" ]; then
     # this case, remove the directory. It should always be safe to remove this directory because if the directory
     # existed in the distribution and was non-empty, then the move operation would fail (because non-empty directories
     # cannot be overwritten by mv). All distributions of a given version are also assumed to be identical. The only
-    # instance in which this would not work is if the distribution purposely contained an empty directory that matched
+    # instance in which this would ngiot work is if the distribution purposely contained an empty directory that matched
     # the name "godel-$VERSION", and this is assumed to never be true.
     if [ -d "$GODEL_BASE_DIR/dists/godel-$VERSION/godel-$VERSION" ]; then
         rm -rf "$GODEL_BASE_DIR/dists/godel-$VERSION/godel-$VERSION"
