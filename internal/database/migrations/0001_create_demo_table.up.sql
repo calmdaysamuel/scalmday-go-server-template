@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 CREATE TABLE demo (
-    key text,
-    val jsonb
+    key text NOT NULL ,
+    val jsonb NOT NULL
 );
 COMMIT;
