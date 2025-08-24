@@ -25,6 +25,8 @@ type InstallConfig struct {
 }
 
 type DatabaseConfig struct {
-	Type             string `yaml:"type"`
-	ConnectionString string `yaml:"connection-string"`
+	Type                 string `yaml:"type"`
+	ConnectionString     string `yaml:"connection-string"`
+	PerformUpMigration   bool   `yaml:"perform-up-migration"`
+	PerformDownMigration bool   `yaml:"perform-down-migration"`
 }
