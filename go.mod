@@ -3,6 +3,7 @@ module scalmday-go-server-template
 go 1.25.0
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/palantir/conjure-go-runtime/v2 v2.97.0
 	github.com/palantir/pkg/bearertoken v1.1.0
