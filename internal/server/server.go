@@ -17,6 +17,7 @@ package server
 import (
 	"context"
 	"scalmday-go-server-template/config"
+	"scalmday-go-server-template/internal/database"
 	"scalmday-go-server-template/internal/generated/applicationapi/com/scalmday/mynumberservice"
 	"scalmday-go-server-template/internal/resources"
 
@@ -26,10 +27,17 @@ import (
 
 func Init(ctx context.Context, info witchcraft.InitInfo) (gracefulShutdownFunc func(), initializationErr error) {
 	runtimeConfig := refreshable.ToV2[config.RuntimeConfig](info.RuntimeConfig)
-	_ = info.InstallConfig.(config.InstallConfig)
-	err := mynumberservice.RegisterRoutesMyNumberService(info.Router, resources.NewNumberService(ctx, runtimeConfig))
+	installConfig := info.InstallConfig.(config.InstallConfig)
+	_, closer, err := database.Init(ctx, installConfig)
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+
+	err = mynumberservice.RegisterRoutesMyNumberService(info.Router, resources.NewNumberService(ctx, runtimeConfig))
+	if err != nil {
+		return nil, err
+	}
+	return func() {
+		_ = closer(ctx)
+	}, nil
 }

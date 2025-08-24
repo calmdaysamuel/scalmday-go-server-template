@@ -20,5 +20,11 @@ import (
 
 type InstallConfig struct {
 	config.Install `yaml:",inline"`
-	MyNumber       int `yaml:"my-number"`
+	MyNumber       int            `yaml:"my-number"`
+	Database       DatabaseConfig `yaml:"database"`
+}
+
+type DatabaseConfig struct {
+	Type             string `yaml:"type"`
+	ConnectionString string `yaml:"connection-string"`
 }

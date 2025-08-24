@@ -999,6 +999,7 @@ type RefreshableInstallConfig interface {
 
 	Install() RefreshableInstall
 	MyNumber() refreshable.Int
+	Database() RefreshableDatabaseConfig
 }
 
 type RefreshingInstallConfig struct {
@@ -1034,6 +1035,12 @@ func (r RefreshingInstallConfig) Install() RefreshableInstall {
 func (r RefreshingInstallConfig) MyNumber() refreshable.Int {
 	return refreshable.NewInt(r.MapInstallConfig(func(i InstallConfig) interface{} {
 		return i.MyNumber
+	}))
+}
+
+func (r RefreshingInstallConfig) Database() RefreshableDatabaseConfig {
+	return NewRefreshingDatabaseConfig(r.MapInstallConfig(func(i InstallConfig) interface{} {
+		return i.Database
 	}))
 }
 
@@ -1203,5 +1210,51 @@ func (r RefreshingServer) CertFile() refreshable.String {
 func (r RefreshingServer) KeyFile() refreshable.String {
 	return refreshable.NewString(r.MapServer(func(i config.Server) interface{} {
 		return i.KeyFile
+	}))
+}
+
+type RefreshableDatabaseConfig interface {
+	refreshable.Refreshable
+	CurrentDatabaseConfig() DatabaseConfig
+	MapDatabaseConfig(func(DatabaseConfig) interface{}) refreshable.Refreshable
+	SubscribeToDatabaseConfig(func(DatabaseConfig)) (unsubscribe func())
+
+	Type() refreshable.String
+	ConnectionString() refreshable.String
+}
+
+type RefreshingDatabaseConfig struct {
+	refreshable.Refreshable
+}
+
+func NewRefreshingDatabaseConfig(in refreshable.Refreshable) RefreshingDatabaseConfig {
+	return RefreshingDatabaseConfig{Refreshable: in}
+}
+
+func (r RefreshingDatabaseConfig) CurrentDatabaseConfig() DatabaseConfig {
+	return r.Current().(DatabaseConfig)
+}
+
+func (r RefreshingDatabaseConfig) MapDatabaseConfig(mapFn func(DatabaseConfig) interface{}) refreshable.Refreshable {
+	return r.Map(func(i interface{}) interface{} {
+		return mapFn(i.(DatabaseConfig))
+	})
+}
+
+func (r RefreshingDatabaseConfig) SubscribeToDatabaseConfig(consumer func(DatabaseConfig)) (unsubscribe func()) {
+	return r.Subscribe(func(i interface{}) {
+		consumer(i.(DatabaseConfig))
+	})
+}
+
+func (r RefreshingDatabaseConfig) Type() refreshable.String {
+	return refreshable.NewString(r.MapDatabaseConfig(func(i DatabaseConfig) interface{} {
+		return i.Type
+	}))
+}
+
+func (r RefreshingDatabaseConfig) ConnectionString() refreshable.String {
+	return refreshable.NewString(r.MapDatabaseConfig(func(i DatabaseConfig) interface{} {
+		return i.ConnectionString
 	}))
 }

@@ -3,3 +3,6 @@ product-version: 0.0.1
 server:
   port: 1234
   context-path: "/unknown-service"
+database:
+  type: postgresql
+  connection-string: postgresql://postgres:[YOUR-PASSWORD]@db.vjzjeeqznfwdmtqsfshm.supabase.co:5432/postgres
