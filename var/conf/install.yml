@@ -5,6 +5,6 @@ server:
   context-path: "/unknown-service"
 database:
   type: postgres
-  connection-string: postgresql://postgres.vjzjeeqznfwdmtqsfshm:[PASSWORD]@aws-1-us-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true
+  connection-string: postgresql://[USER]:[PASSWORD]@[DB_URL]:[DB_PORT]/postgres?pgbouncer=true
   perform-up-migration: true
   perform-down-migration: true
