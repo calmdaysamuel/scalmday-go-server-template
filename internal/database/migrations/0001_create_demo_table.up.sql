@@ -1,4 +1,6 @@
+BEGIN TRANSACTION;
 CREATE TABLE demo (
     key text,
-    val integer
+    val jsonb
 );
+COMMIT;
