@@ -1,0 +1,18 @@
+types:
+  definitions:
+    default-package: com.scalmday.mynumberservice
+    objects:
+      MyNumber:
+        alias: safelong
+
+services:
+  MyNumberService:
+    name: My Number Service
+    package: com.scalmday.mynumberservice
+    base-path: /numbers
+    default-auth: header
+    endpoints:
+      get:
+        docs: My favorite number
+        http: GET /my
+        returns: MyNumber

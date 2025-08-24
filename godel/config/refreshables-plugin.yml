@@ -1,0 +1,5 @@
+refreshables:
+  ./config:
+    types:
+      - RuntimeConfig
+      - InstallConfig

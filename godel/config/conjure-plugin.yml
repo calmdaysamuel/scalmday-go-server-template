@@ -1,0 +1,6 @@
+version: 1
+projects:
+  my-service-api:
+    output-dir: internal/generated/applicationapi
+    ir-locator: conjure/number-checker.yml
+    server: true

@@ -1,0 +1,7 @@
+diagnostics:
+  debug-shared-secret: secret-not-set
+health-checks:
+  shared-secret: secret-not-set
+logging:
+  level: debug
+my-favorite-number: 10081
