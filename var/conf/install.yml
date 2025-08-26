@@ -3,8 +3,11 @@ product-version: 0.0.1
 server:
   port: 1234
   context-path: "/unknown-service"
+trusted-public-key-urls:
+  - https://vjzjeeqznfwdmtqsfshm.supabase.co/auth/v1/.well-known/jwks.json
 database:
   type: postgres
   connection-string: postgresql://[USER]:[PASSWORD]@[DB_URL]:[DB_PORT]/postgres?pgbouncer=true
   perform-up-migration: true
   perform-down-migration: true
+use-console-log: true

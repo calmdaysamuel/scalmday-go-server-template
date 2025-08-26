@@ -19,9 +19,10 @@ import (
 )
 
 type InstallConfig struct {
-	config.Install `yaml:",inline"`
-	MyNumber       int            `yaml:"my-number"`
-	Database       DatabaseConfig `yaml:"database"`
+	config.Install       `yaml:",inline"`
+	MyNumber             int            `yaml:"my-number"`
+	Database             DatabaseConfig `yaml:"database"`
+	TrustedPublicKeyURLs []string       `yaml:"trusted-public-key-urls"`
 }
 
 type DatabaseConfig struct {

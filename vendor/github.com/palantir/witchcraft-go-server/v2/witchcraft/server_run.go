@@ -92,7 +92,7 @@ func newServerStartShutdownFns(
 		svcLogger.Info("Listening to https", svc1log.SafeParam("address", addr), svc1log.SafeParam("server", serverName))
 
 		// cert and key specified in TLS config so no need to pass in here
-		if err := httpServer.ListenAndServeTLS("", ""); err != nil {
+		if err := httpServer.ListenAndServe(); err != nil {
 			if err == http.ErrServerClosed {
 				svcLogger.Info(fmt.Sprintf("%s was closed", serverName))
 				return nil

@@ -16,21 +16,27 @@ package resources
 
 import (
 	"context"
+	werror "github.com/palantir/witchcraft-go-error"
 	"scalmday-go-server-template/config"
 	"scalmday-go-server-template/internal/generated/applicationapi/com/scalmday/mynumberservice"
+	"scalmday-go-server-template/internal/permissions"
 
 	"github.com/palantir/pkg/bearertoken"
 	"github.com/palantir/pkg/refreshable/v2"
 )
 
 type numberService struct {
-	runtime refreshable.Refreshable[config.RuntimeConfig]
+	runtime      refreshable.Refreshable[config.RuntimeConfig]
+	userProvider permissions.UserProvider
 }
 
 func (n *numberService) Get(ctx context.Context, authHeader bearertoken.Token) (mynumberservice.MyNumber, error) {
+	if _, err := n.userProvider.GetUser(ctx, authHeader); err != nil {
+		return 0, werror.WrapWithContextParams(ctx, err, "user not found")
+	}
 	return mynumberservice.MyNumber(n.runtime.Current().MyFavoriteNumber), nil
 }
 
-func NewNumberService(ctx context.Context, runtime refreshable.Refreshable[config.RuntimeConfig]) mynumberservice.MyNumberService {
-	return &numberService{runtime: runtime}
+func NewNumberService(ctx context.Context, userProvider permissions.UserProvider, runtime refreshable.Refreshable[config.RuntimeConfig]) mynumberservice.MyNumberService {
+	return &numberService{runtime: runtime, userProvider: userProvider}
 }

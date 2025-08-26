@@ -16,9 +16,11 @@ package server
 
 import (
 	"context"
+	werror "github.com/palantir/witchcraft-go-error"
 	"scalmday-go-server-template/config"
 	"scalmday-go-server-template/internal/database"
 	"scalmday-go-server-template/internal/generated/applicationapi/com/scalmday/mynumberservice"
+	"scalmday-go-server-template/internal/permissions"
 	"scalmday-go-server-template/internal/resources"
 
 	"github.com/palantir/pkg/refreshable"
@@ -33,7 +35,11 @@ func Init(ctx context.Context, info witchcraft.InitInfo) (gracefulShutdownFunc f
 		return nil, err
 	}
 
-	err = mynumberservice.RegisterRoutesMyNumberService(info.Router, resources.NewNumberService(ctx, runtimeConfig))
+	userProvider, err := permissions.NewUserProvider(ctx, installConfig)
+	if err != nil {
+		return nil, werror.WrapWithContextParams(ctx, err, "failed to initialize user provider")
+	}
+	err = mynumberservice.RegisterRoutesMyNumberService(info.Router, resources.NewNumberService(ctx, userProvider, runtimeConfig))
 	if err != nil {
 		return nil, err
 	}

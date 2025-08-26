@@ -15,6 +15,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"scalmday-go-server-template/config"
 	"scalmday-go-server-template/internal/server"
 
@@ -28,6 +29,7 @@ func main() {
 		WithECVKeyProvider(witchcraft.ECVKeyNoOp()).
 		WithRuntimeConfigType(config.RuntimeConfig{}).
 		WithInstallConfigType(config.InstallConfig{}).
+		WithClientAuth(tls.NoClientCert).
 		Start(); err != nil {
 		panic(err)
 	}
